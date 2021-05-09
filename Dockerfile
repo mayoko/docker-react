@@ -2,7 +2,8 @@ FROM node:alpine as builder
 
 USER node
 
-WORKDIR '/app'
+RUN mkdir -p /home/node/app
+WORKDIR '/home/node/app'
 
 COPY --chown=node:node package.json .
 RUN npm install
@@ -11,4 +12,4 @@ RUN npm run build
 
 
 FROM nginx
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /home/node/app/build /usr/share/nginx/html
